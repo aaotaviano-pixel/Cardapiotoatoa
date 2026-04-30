@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tô a Toa — Cardápio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0c09;
+    --surface: #1a1510;
+    --card: #211c15;
+    --amber: #f5a623;
+    --amber-light: #ffc94d;
+    --ember: #e8470a;
+    --cream: #f5ede0;
+    --muted: #8a7a67;
+    --border: #2e2518;
+    --highlight: #ff6b35;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 0 60px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    position: relative;
+    padding: 56px 40px 48px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(245,166,35,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 10px;
+    opacity: 0.85;
+  }
+
+  .header-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 18vw, 110px);
+    line-height: 0.9;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+    position: relative;
+    display: inline-block;
+  }
+
+  .header-logo span {
+    color: var(--amber);
+  }
+
+  .header-sub {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  .divider-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 40px;
+    margin-bottom: 8px;
+  }
+
+  .divider-line::before,
+  .divider-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+  }
+
+  .divider-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--amber);
+    opacity: 0.6;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-label {
+    padding: 28px 40px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-label-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+    line-height: 1;
+  }
+
+  .section-label-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── MENU ITEM CARD ── */
+  .menu-item {
+    margin: 0 20px 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: start;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .menu-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--amber), var(--ember));
+    border-radius: 3px 0 0 3px;
+  }
+
+  .menu-item:hover {
+    border-color: rgba(245,166,35,0.25);
+    transform: translateY(-1px);
+  }
+
+  .menu-item.featured {
+    background: linear-gradient(135deg, #2a1f0f 0%, #1e1608 100%);
+    border-color: rgba(245,166,35,0.3);
+  }
+
+  .menu-item.featured::before {
+    width: 4px;
+    background: linear-gradient(to bottom, var(--amber-light), var(--highlight));
+    box-shadow: 0 0 12px rgba(245,166,35,0.4);
+  }
+
+  .item-badge {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: var(--ember);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  .item-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--cream);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+
+  .menu-item.featured .item-name {
+    font-size: 22px;
+    color: var(--amber-light);
+  }
+
+  .item-ingredients {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    font-weight: 300;
+    font-style: italic;
+    max-width: 340px;
+  }
+
+  .item-price-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 2px;
+    min-width: 72px;
+  }
+
+  .price-currency {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--amber);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    margin-bottom: 1px;
+  }
+
+  .price-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    line-height: 1;
+    color: var(--cream);
+    letter-spacing: 0.01em;
+  }
+
+  .menu-item.featured .price-value {
+    font-size: 44px;
+    color: var(--amber-light);
+  }
+
+  /* ── EXTRAS CARD ── */
+  .extras-card {
+    margin: 24px 20px 0;
+    border: 1px dashed rgba(245,166,35,0.3);
+    border-radius: 14px;
+    padding: 20px 24px;
+    background: rgba(245,166,35,0.04);
+  }
+
+  .extras-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 14px;
+  }
+
+  .extras-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .extra-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .extra-name {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--cream);
+  }
+
+  .extra-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--amber);
+    letter-spacing: 0.03em;
+  }
+
+  .extra-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 6px 0;
+  }
+
+  /* ── DRINKS CARD ── */
+  .drinks-card {
+    margin: 12px 20px 0;
+    background: linear-gradient(135deg, #131a20 0%, #0d1318 100%);
+    border: 1px solid rgba(100,180,255,0.15);
+    border-radius: 14px;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .drinks-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #64b4ff, #3a7bd5);
+    border-radius: 3px 0 0 3px;
+  }
+
+  .drinks-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #64b4ff;
+    margin-bottom: 8px;
+  }
+
+  .drinks-desc {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .drinks-icons {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .drink-pill {
+    background: rgba(100,180,255,0.08);
+    border: 1px solid rgba(100,180,255,0.18);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11.5px;
+    color: #8dc8ff;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 40px 40px 0;
+  }
+
+  .footer-text {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.8;
+    opacity: 0.7;
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--border);
+    letter-spacing: 0.15em;
+    margin-top: 24px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .header { animation: fadeUp 0.6s ease both; }
+  .menu-item:nth-child(1) { animation: fadeUp 0.5s 0.1s ease both; }
+  .menu-item:nth-child(2) { animation: fadeUp 0.5s 0.18s ease both; }
+  .menu-item:nth-child(3) { animation: fadeUp 0.5s 0.26s ease both; }
+  .menu-item:nth-child(4) { animation: fadeUp 0.5s 0.34s ease both; }
+  .menu-item:nth-child(5) { animation: fadeUp 0.5s 0.42s ease both; }
+  .menu-item:nth-child(6) { animation: fadeUp 0.5s 0.50s ease both; }
+  .menu-item:nth-child(7) { animation: fadeUp 0.5s 0.58s ease both; }
+  .extras-card, .drinks-card { animation: fadeUp 0.5s 0.66s ease both; }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <p class="header-eyebrow">Bem-vindo à</p>
+    <div class="header-logo">tô<span>a</span>toa</div>
+    <p class="header-sub">Lanchonete &nbsp;·&nbsp; Lanches Artesanais</p>
+  </div>
+
+  <div class="divider-line"><div class="divider-dot"></div></div>
+
+  <!-- SECTION LANCHES -->
+  <div class="section-label">
+    <span class="section-label-text">Lanches</span>
+    <div class="section-label-line"></div>
+  </div>
+
+  <!-- X-BURGUER -->
+  <div class="menu-item">
+    <div>
+      <div class="item-name">X-Burguer</div>
+      <div class="item-ingredients">Pão, hambúrguer, presunto e mussarela</div>
+    </div>
+    <div class="item-price-col">
+      <span class="price-currency">R$</span>
+      <span class="price-value">10</span>
+    </div>
+  </div>
+
+  <!-- X-SALADA -->
+  <div class="menu-item">
+    <div>
+      <div class="item-name">X-Salada</div>
+      <div class="item-ingredients">Pão, alface, tomate, milho, batata palha, presunto, mussarela e hambúrguer</div>
+    </div>
+    <div class="item-price-col">
+      <span class="price-currency">R$</span>
+      <span class="price-value">13</span>
+    </div>
+  </div>
+
+  <!-- X-BACON -->
+  <div class="menu-item">
+    <div>
+      <div class="item-name">X-Bacon</div>
+      <div class="item-ingredients">Pão, alface, tomate, milho, batata palha, presunto, mussarela, hambúrguer e bacon</div>
+    </div>
+    <div class="item-price-col">
+      <span class="price-currency">R$</span>
+      <span class="price-value">15</span>
+    </div>
+  </div>
+
+  <!-- X-EGG -->
+  <div class="menu-item">
+    <div>
+      <div class="item-name">X-Egg</div>
+      <div class="item-ingredients">Pão, alface, tomate, milho, batata palha, presunto, mussarela, hambúrguer e ovo</div>
+    </div>
+    <div class="item-price-col">
+      <span class="price-currency">R$</span>
+      <span class="price-value">15</span>
+    </div>
+  </div>
+
+  <!-- X-TUDO -->
+  <div class="menu-item">
+    <div>
+      <div class="item-name">X-Tudo</div>
+      <div class="item-ingredients">Pão, alface, tomate, milho, batata palha, presunto, mussarela, hambúrguer, bacon e ovo</div>
+    </div>
+    <div class="item-price-col">
+      <span class="price-currency">R$</span>
+      <span class="price-value">20</span>
+    </div>
+  </div>
+
+  <!-- X-TUDÃO -->
+  <div class="menu-item">
+    <div>
+      <div class="item-name">X-Tudão</div>
+      <div class="item-ingredients">Pão, alface, tomate, milho, batata palha, presunto, mussarela, 2 hambúrgueres, 2× bacon, cheddar e 2 ovos</div>
+    </div>
+    <div class="item-price-col">
+      <span class="price-currency">R$</span>
+      <span class="price-value">24</span>
+    </div>
+  </div>
+
+  <!-- SUPER X-TUDÃO -->
+  <div class="menu-item featured">
+    <div class="item-badge">⭐ Destaque</div>
+    <div>
+      <div class="item-name">Super X-Tudão</div>
+      <div class="item-ingredients">Pão, alface, tomate, milho, batata palha, presunto, mussarela, 3 hambúrgueres, 3× bacon, cheddar e 3 ovos</div>
+    </div>
+    <div class="item-price-col">
+      <span class="price-currency">R$</span>
+      <span class="price-value">30</span>
+    </div>
+  </div>
+
+  <!-- EXTRAS -->
+  <div class="extras-card">
+    <div class="extras-title">✦ Adicionais</div>
+    <div class="extras-list">
+      <div class="extra-row">
+        <span class="extra-name">Cheddar extra</span>
+        <span class="extra-price">R$ 3,00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRINKS -->
+  <div class="drinks-card">
+    <div class="drinks-title">◈ Refrigerantes</div>
+    <div class="drinks-desc">Temos variedades disponíveis — pergunte ao atendente!</div>
+    <div class="drinks-icons">
+      <span class="drink-pill">Cola</span>
+      <span class="drink-pill">Guaraná</span>
+      <span class="drink-pill">Laranja</span>
+      <span class="drink-pill">Limão</span>
+      <span class="drink-pill">+ outros</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p class="footer-text">Feito com carinho &nbsp;·&nbsp; Qualidade em cada mordida</p>
+    <div class="footer-brand">TÔ A TOA</div>
+  </div>
+
+</div>
+</body>
+</html>
+
